@@ -23,6 +23,8 @@ class Player(pygame.sprite.Sprite):
         self.last_attack = 0
         self.health = 3
         self.coins = 0
+        self.last_hit_time = 0
+        self.inv_ms = 700  # 0.7s of invencibility after taking damage
 
     def input(self):
         keys = pygame.key.get_pressed()

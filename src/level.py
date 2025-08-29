@@ -122,15 +122,35 @@ class Level:
                             enemy.kill()
                             self.enemies.remove(enemy)
 
-        # Damage
-        for enemy in self.enemies:
-            if self.player.rect.colliderect(enemy.rect):
-                self.player.health = max(0, self.player.health - 1)
-                # Pull
-                if self.player.rect.centerx < enemy.rect.centerx:
-                    self.player.rect.x -= 20
-                else:
-                    self.player.rect.x += 20
+        # Contact damage
+        now = pygame.time.get_ticks()
+        player = self.player
+
+        for enemy in list(self.enemies):
+            # Detects stomp
+            player_prev_bottom = player.rect.bottom - player.vel.y
+
+            if player.rect.colliderect(enemy.rect):
+                # Verifies stomp
+                is_descendo = player.vel.y > 0
+                stomp_from_top = player_prev_bottom <= enemy.rect.top + 6 and is_descendo
+
+                if stomp_from_top:
+                    # Kills the enemy and bounces
+                    enemy.kill()
+                    self.enemies.remove(enemy)
+                    player.vel.y = -8  # Kick
+                    continue
+
+                # Otherwhise, player gets damaged (lateral contact)
+                if now - player.last_hit_time >= player.inv_ms:
+                    player.health = max(0, player.health - 1)
+                    player.last_hit_time = now
+                    # horizontal knockback
+                    if player.rect.centerx < enemy.rect.centerx:
+                        player.rect.x -= 24
+                    else:
+                        player.rect.x += 24
 
     def draw(self, screen):
         self.camera.custom_draw(screen, self.player.rect)
