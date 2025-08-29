@@ -3,6 +3,25 @@ from settings import TILE_SIZE, WIDTH, HEIGHT, SKY
 from tiles import Tile
 from entities import Player, Enemy, Coin
 
+def _extract_platform_segments(tiles_group):
+    # Gets horizontal segments per line
+    by_row = {}
+    for t in tiles_group:
+        by_row.setdefault(t.rect.y, []).append(t.rect)
+    segments = []
+    for y, rects in by_row.items():
+        rects = sorted(rects, key=lambda r: r.x)
+        start = rects[0].x
+        end = rects[0].right
+        for r in rects[1:]:
+            if r.x == end:
+                end = r.right
+            else:
+                segments.append(pygame.Rect(start, y, end - start, rects[0].height))
+                start, end = r.x, r.right
+        segments.append(pygame.Rect(start, y, end - start, rects[0].height))
+    return segments
+
 LEVEL_MAP = [
     "                                                     ",
     "                                                     ",
@@ -47,6 +66,20 @@ class Level:
 
         self.player = None
         self.build()
+
+        # After building tiles, creates enemies per platform (except ground level)
+        segments = _extract_platform_segments(self.tiles)
+        ground_y = max(seg.y for seg in segments) if segments else 999999
+
+        for seg in segments:
+            if seg.y >= ground_y:   # skips ground level
+                continue
+            # An enemy at the center of each segment
+            enemy_x = seg.centerx - 16  
+            enemy_y = seg.top - 32      
+            enemy = Enemy((enemy_x, enemy_y), (seg.left, seg.right))
+            self.enemies.add(enemy)
+            self.camera.add(enemy)
 
     def build(self):
         for row_idx, row in enumerate(LEVEL_MAP):
