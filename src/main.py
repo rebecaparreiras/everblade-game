@@ -38,6 +38,15 @@ def main():
             keys = pygame.key.get_pressed()
             if keys[pygame.K_r]:
                 level = Level()
+        # Victory when no enemies
+        elif len(level.enemies) == 0:
+            font = pygame.font.SysFont("arial", 36, bold=True)
+            txt = font.render("You won! Press R to restart", True, (200, 255, 200))
+            screen.blit(txt, (WIDTH//2 - txt.get_width()//2, HEIGHT//3))
+            pygame.display.flip()
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_r]:
+                level = Level()
         else:
             pygame.display.flip()
 
