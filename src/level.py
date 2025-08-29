@@ -4,16 +4,14 @@ from tiles import Tile
 from entities import Player, Enemy, Coin
 
 LEVEL_MAP = [
-    "                                                                 ",
-    "                                                                 ",
-    "                       C                                         ",
-    "         E                                                       ",
-    "   XXXXX            XXXXX                                        ",
-    "                                                                 ",
-    "                 XXXXXXX                                         ",
-    "                                                                 ",
-    "       P                                                         ",
-    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+    "                                                                ",
+    "                  CC                                            ",
+    "                XXXXXXX                                         ",
+    "       CC                C                                      ",
+    "      XXXXX            XXXXX                                    ",
+    "  P     C                           CCC                         ",
+    "                                                                ",
+    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
 ]
 
 # Simple camera following the player
