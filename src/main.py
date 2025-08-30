@@ -5,9 +5,24 @@ from ui import HUD
 
 def main():
     pygame.init()
+
+    # Avoids noise and ms
+    try:
+        pygame.mixer.pre_init(frequency=44100, size=-16, channels=2, buffer=512)
+    except:
+        pass
+
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption(CAPTION)
     clock = pygame.time.Clock()
+
+    # Background track
+    try:
+        pygame.mixer.music.load("src/assets/sounds/background-music.mp3")
+        pygame.mixer.music.set_volume(0.15)
+        pygame.mixer.music.play(-1) # infinite loop
+    except Exception as e:
+        print("Não foi possível carregar a trilha:", e)
 
     level = Level()
     hud = HUD()
@@ -28,7 +43,7 @@ def main():
         level.draw(screen)
         hud.draw(screen, coins=level.player.coins, health=level.player.health)
 
-        # Slow pause when dying (demo)
+        # Slow pause when defeated 
         if level.player.health <= 0:
             font = pygame.font.SysFont("arial", 36, bold=True)
             txt = font.render("Game Over - Press R", True, (255, 230, 230))
