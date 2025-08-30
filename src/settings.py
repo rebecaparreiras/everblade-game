@@ -1,4 +1,10 @@
 import pygame
+import os, sys
+
+# For .exe paths
+def resource_path(relative_path: str) -> str:
+    base_path = getattr(sys, "_MEIPASS", os.path.abspath("."))
+    return os.path.join(base_path, relative_path)
 
 # View
 WIDTH, HEIGHT = 960, 540 
@@ -25,3 +31,8 @@ KEY_LEFT = pygame.K_a
 KEY_RIGHT = pygame.K_d
 KEY_JUMP = pygame.K_SPACE
 KEY_ATTACK = pygame.K_k
+
+# Assets' folders
+ASSETS_DIR = "src/assets"
+IMG_DIR = os.path.join(ASSETS_DIR, "images")
+SND_DIR = os.path.join(ASSETS_DIR, "sounds")

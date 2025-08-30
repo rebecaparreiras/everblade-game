@@ -1,9 +1,10 @@
 import pygame
-from settings import MOVE_SPEED, JUMP_FORCE, GRAVITY, GOLD, RED, TILE_SIZE
+from settings import MOVE_SPEED, JUMP_FORCE, GRAVITY, GOLD, RED, TILE_SIZE, IMG_DIR
+from settings import resource_path
 
 def load_or_placeholder(path, size, color):
     try:
-        img = pygame.image.load(path).convert_alpha()
+        img = pygame.image.load(resource_path(path)).convert_alpha()
         return pygame.transform.scale(img, size)
     except:
         surf = pygame.Surface(size, pygame.SRCALPHA)

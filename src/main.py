@@ -1,7 +1,9 @@
 import pygame, sys
-from settings import WIDTH, HEIGHT, FPS, CAPTION, DARK
+from settings import WIDTH, HEIGHT, FPS, CAPTION, SND_DIR, resource_path
 from level import Level
 from ui import HUD
+from settings import resource_path
+import os
 
 def main():
     pygame.init()
@@ -18,7 +20,8 @@ def main():
 
     # Background track
     try:
-        pygame.mixer.music.load("src/assets/sounds/background-music.mp3")
+        pygame.mixer.music.load(resource_path(os.path.join(SND_DIR, "background-music.mp3")))
+        # pygame.mixer.music.load("src/assets/sounds/background-music.mp3")
         pygame.mixer.music.set_volume(0.15)
         pygame.mixer.music.play(-1) # infinite loop
     except Exception as e:
